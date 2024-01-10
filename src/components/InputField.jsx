@@ -28,7 +28,7 @@ const InputField = ({value, onChange}) => {
       label='YouTube video URL'
       variant='outlined'
       error
-      helperText='Invalid URL'
+      // helperText='Invalid URL'
       onChange={onChange}
       value={value}
     />
