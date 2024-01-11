@@ -9,4 +9,4 @@ To do list:
 - summary cell
 - input field for YT link
 - paste YT link functionality
-- create logo and add it to the page
+<!-- - create logo and add it to the page -->

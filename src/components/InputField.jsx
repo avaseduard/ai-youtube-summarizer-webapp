@@ -1,24 +1,16 @@
-import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
-import { useState } from 'react'
+import Box from '@mui/material/Box'
 
-const InputField = ({value, onChange}) => {
-  // const [value, setValue] = useState('')
-
-  // const onChange = e => {
-  //   e.preventDefault()
-  //   setValue(e.target.value)
-  //   console.log(e.target.value)
-  // }
-
+const InputField = ({ value, onChange }) => {
+  //
   return (
     // <Box
-    //   component="form"
+    //   component='form'
     //   sx={{
-    //     '& .MuiTextField-root': { m: 1, width: '25ch' },
+    //     '& .MuiTextField-root': { m: 1 },
     //   }}
     //   noValidate
-    //   autoComplete="off"
+    //   autoComplete='off'
     // >
     //   <div>
     <TextField
