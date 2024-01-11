@@ -3,6 +3,7 @@ import Box from '@mui/material/Box'
 import Header from '../components/Header'
 import InputForm from '../components/InputForm'
 import AdvantageCards from '../components/AdvantageCards'
+import Footer from '../components/Footer'
 
 const Home = () => {
   //
@@ -17,6 +18,9 @@ const Home = () => {
 
         {/* Advantage cards */}
         <AdvantageCards />
+
+        {/* Footer */}
+        <Footer />
       </Box>
     </div>
   )

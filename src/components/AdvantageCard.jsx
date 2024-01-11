@@ -6,7 +6,7 @@ import { CardActionArea } from '@mui/material'
 
 const AdvantageCard = ({ title, text, image, alt }) => {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345, height: 317, m: 2 }}>
       {/* <CardActionArea> */}
       <CardMedia
         component='img'
