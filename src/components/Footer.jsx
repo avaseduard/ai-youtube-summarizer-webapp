@@ -17,11 +17,11 @@ const Footer = () => {
   }))
 
   return (
-    <Item sx={{ m: 2 }}>
+    <Item sx={{ m: 1 }} >
       <Grid
         container
         spacing={2}
-        // sx={{ m: 2 }}
+        sx={{ m: 1 }}
         display='flex'
         justifyContent='center'
         alignItems='center'
