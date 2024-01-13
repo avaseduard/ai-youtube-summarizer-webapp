@@ -22,14 +22,14 @@ const Transcript = () => {
     padding: theme.spacing(1),
     textAlign: 'center',
     color: theme.palette.text.secondary,
-    overflow: 'hidden', // Ensure the image doesn't overflow the container
+    // overflow: 'hidden', // Ensure the image doesn't overflow the container
   }))
 
   return (
     <Grid container spacing={2} sx={{ mb: 2, mx: 1 }}>
       <Grid xs={6}>
         <Item>
-          <h2>{titleText}</h2>
+          <h2 style={{color: 'black'}}>{titleText}</h2>
           <img
             src={thumbnail_image}
             alt=''
@@ -39,13 +39,13 @@ const Transcript = () => {
       </Grid>
       <Grid xs={6}>
         <Item>
-          <h2>AI summary</h2>
+          <h2 style={{color: 'black'}}>AI summary</h2>
           {summaryText}
         </Item>
       </Grid>
       <Grid xs={12}>
         <Item>
-          <h2>Full AI transcript</h2>
+          <h2 style={{color: 'black'}}>Full AI transcript</h2>
           {transcriptText}
         </Item>
       </Grid>

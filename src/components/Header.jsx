@@ -24,7 +24,7 @@ const Header = () => {
           justifyContent='center'
           alignItems='center'
         >
-          <h1 className='display-4'>
+          <h1 style={{color: 'black'}} className='display-4'>
             YouTube video summarizer with ChatGPT AI
           </h1>
         </Grid>

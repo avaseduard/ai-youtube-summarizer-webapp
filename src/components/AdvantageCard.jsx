@@ -13,10 +13,15 @@ const AdvantageCard = ({ title, text, image, alt }) => {
         height='140'
         image={image}
         alt={alt}
-        sx={{ padding: "1em 0 0 0", objectFit: "contain" }}
+        sx={{ padding: '1em 0 0 0', objectFit: 'contain' }}
       />
       <CardContent>
-        <Typography gutterBottom variant='h5' component='div'>
+        <Typography
+          sx={{ color: 'black' }}
+          gutterBottom
+          variant='h5'
+          component='div'
+        >
           {title}
         </Typography>
         <Typography variant='body2' color='text.secondary'>
