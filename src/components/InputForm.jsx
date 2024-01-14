@@ -1,17 +1,17 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Stack } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import { styled } from '@mui/material/styles'
 import InputField from './InputField'
 import ContainedButton from './ContainedButton'
+import { setSummary } from '../store/reducers/summary.reducer'
 
 const InputForm = () => {
   const [value, setValue] = useState('')
   const [disabled, setDisabled] = useState(false)
-  const [summary, setSummary] = useState('')
-  const [thumbnailUrl, setThumbnailUrl] = useState('')
-  const [videoTitle, setVideoTitle] = useState('')
+  const dispatch = useDispatch()
 
   // Get value from input field
   const onChange = e => {
@@ -45,11 +45,9 @@ const InputForm = () => {
     })
       .then(response => response.json())
       .then(data => {
-        setSummary(data.summary)
-        setThumbnailUrl(data.thumbnail_url)
-        setVideoTitle(data.video_title)
         setDisabled(false)
         console.log('data-->', data)
+        dispatch(setSummary(data.summary))
       })
       .catch(error => {
         console.error('Error fetching summary:', error)
