@@ -4,11 +4,10 @@ Technologies used:
 - Bootstrap
 
 To do list:
-<!-- - cell for TV screen with YT video thumbnail -->
-<!-- - transcript cell -->
-<!-- - summary cell -->
-<!-- - input field for YT link -->
-<!-- - paste YT link functionality -->
-<!-- - create logo and add it to the page -->
-- send video link and get video thumbnail, title, summary, transcript
-- set input field error condition
+- set input field error conditions
+- add loading card or spinners
+- hide thumbnail, title, summary, transcript when they are not available
+- after thumbnail, title, summary, transcript are available, clear input field
+- save all to local storage and if title already exists, get it from local storage instead of downloading it again
+- refactor transcript component
+- refactor mui Item function

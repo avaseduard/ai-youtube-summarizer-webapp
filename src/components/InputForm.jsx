@@ -7,6 +7,9 @@ import { styled } from '@mui/material/styles'
 import InputField from './InputField'
 import ContainedButton from './ContainedButton'
 import { setSummary } from '../store/reducers/summary.reducer'
+import { setTitle } from '../store/reducers/title.reducer'
+import { setThumbnail } from '../store/reducers/thumbnail.reducer'
+import { setTranscriptions } from '../store/reducers/transcriptions.reducer'
 
 const InputForm = () => {
   const [value, setValue] = useState('')
@@ -48,6 +51,9 @@ const InputForm = () => {
         setDisabled(false)
         console.log('data-->', data)
         dispatch(setSummary(data.summary))
+        dispatch(setTitle(data.video_title))
+        dispatch(setThumbnail(data.thumbnail_url))
+        dispatch(setTranscriptions(data.transcriptions))
       })
       .catch(error => {
         console.error('Error fetching summary:', error)

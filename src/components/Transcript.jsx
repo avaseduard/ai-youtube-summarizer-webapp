@@ -1,17 +1,39 @@
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { styled } from '@mui/material/styles'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Unstable_Grid2'
-import thumbnail_image from '../images/youtube_thumbnail.jpg'
 
 const Transcript = () => {
-  const summaryText = useSelector(state => state.summary.summary)
+  const [summaryText, setSummaryText] = useState('')
+  const [titleText, setTitleText] = useState('')
+  const [thumbnailUrl, setThumbnailUrl] = useState('')
+  const [transcriptionsText, setTranscriptionsText] = useState([])
+  const summary = useSelector(state => state.summary.summary)
+  const title = useSelector(state => state.title.title)
+  const thumbnail = useSelector(state => state.thumbnail.thumbnail)
+  const transcriptions = useSelector(
+    state => state.transcriptions.transcriptions
+  )
 
-  const titleText = `Best Short Motivational Speech Video - 24 HOURS - 1-Minute Motivation #2`
+  // Set all fields with info from Redux
+  useEffect(() => {
+    setSummaryText(summary)
+  }, [summary])
 
-  const transcriptText = `If you only have 24 hours in a day, your success is dependent upon how you use the 24. You got to hear me, people talk about Oprah Winfrey, you know, Ted Turner, Warren Buffet. Listen to me, I don't care how much money you make, you only get 24 hours in a day. And the difference between Oprah and the person that's broke is Oprah uses her 24 hours wisely. That's it, listen to me. That's it, you get 24. I don't care if you broke, you grew up broke. I don't care if you grew up rich. I don't care if you're in college, you're not in college. You only get 24 hours and I blew up literally. I went from being a high school dropout to selling 6,000 books in less than six months. What happened? My 24 hours. I was like, okay, Eric, you got to get a grip on your 24 hours because you about to be broke for the rest of your life. And that's all I need you to do for me. I can tell you all about your life if you just write down your 24-hour schedule for me. You let me look at it. I can tell you where you're going to be in five years. I can tell you where you're going to be in 10 years. I can tell you where you're going to be in 20 years if you keep that schedule.
-`
+  useEffect(() => {
+    setTitleText(title)
+  }, [title])
 
+  useEffect(() => {
+    setThumbnailUrl(thumbnail)
+  }, [thumbnail])
+
+  useEffect(() => {
+    setTranscriptionsText(transcriptions)
+  }, [transcriptions])
+
+  //
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -27,7 +49,7 @@ const Transcript = () => {
         <Item>
           <h2 style={{ color: 'black' }}>{titleText}</h2>
           <img
-            src={thumbnail_image}
+            src={thumbnailUrl}
             alt=''
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
@@ -42,7 +64,7 @@ const Transcript = () => {
       <Grid xs={12}>
         <Item>
           <h2 style={{ color: 'black' }}>Full AI transcript</h2>
-          {transcriptText}
+          {transcriptionsText}
         </Item>
       </Grid>
     </Grid>
