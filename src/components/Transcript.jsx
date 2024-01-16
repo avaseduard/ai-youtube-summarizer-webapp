@@ -19,26 +19,17 @@ const Transcript = () => {
   // Set all fields with info from Redux
   useEffect(() => {
     setSummaryText(summary)
-  }, [summary])
-
-  useEffect(() => {
     setTitleText(title)
-  }, [title])
-
-  useEffect(() => {
     setThumbnailUrl(thumbnail)
-  }, [thumbnail])
-
-  useEffect(() => {
     setTranscriptionsText(transcriptions)
-  }, [transcriptions])
+  }, [summary, title, thumbnail, transcriptions])
 
   //
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
     padding: theme.spacing(1),
-    textAlign: 'center',
+    textAlign: 'left',
     color: theme.palette.text.secondary,
     // overflow: 'hidden', // Ensure the image doesn't overflow the container
   }))
@@ -47,7 +38,7 @@ const Transcript = () => {
     <Grid container spacing={2} sx={{ mb: 2, mx: 1 }}>
       <Grid xs={6}>
         <Item>
-          <h2 style={{ color: 'black' }}>{titleText}</h2>
+          <h2 style={{ color: 'black', textAlign: 'center' }}>{titleText}</h2>
           <img
             src={thumbnailUrl}
             alt=''
@@ -56,14 +47,16 @@ const Transcript = () => {
         </Item>
       </Grid>
       <Grid xs={6}>
-        <Item>
-          <h2 style={{ color: 'black' }}>AI summary</h2>
+        <Item style={{ whiteSpace: 'pre-line' }}>
+          <h2 style={{ color: 'black', textAlign: 'center' }}>AI summary</h2>
           {summaryText}
         </Item>
       </Grid>
       <Grid xs={12}>
         <Item>
-          <h2 style={{ color: 'black' }}>Full AI transcript</h2>
+          <h2 style={{ color: 'black', textAlign: 'center' }}>
+            Full AI transcript
+          </h2>
           {transcriptionsText}
         </Item>
       </Grid>

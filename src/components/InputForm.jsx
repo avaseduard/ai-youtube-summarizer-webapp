@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux'
 import { Stack } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
-import { styled } from '@mui/material/styles'
 import InputField from './InputField'
 import ContainedButton from './ContainedButton'
 import { setSummary } from '../store/reducers/summary.reducer'
@@ -12,15 +11,17 @@ import { setThumbnail } from '../store/reducers/thumbnail.reducer'
 import { setTranscriptions } from '../store/reducers/transcriptions.reducer'
 
 const InputForm = () => {
-  const [value, setValue] = useState('')
-  const [disabled, setDisabled] = useState(false)
   const dispatch = useDispatch()
+  const [query, setQuery] = useState('')
+  const [disabled, setDisabled] = useState(false)
+  const [error, setError] = useState(false)
 
   // Get value from input field
   const onChange = e => {
-    e.preventDefault()
-    setValue(e.target.value)
-    console.log(e.target.value)
+    e.target.value.includes('https://www.youtube.com/watch?v=')
+      ? setError(false)
+      : setError(true)
+    setQuery(e.target.value)
   }
 
   // Paste from clipboard button functionality
@@ -28,7 +29,7 @@ const InputForm = () => {
     setDisabled(true)
     try {
       const clipboardText = await navigator.clipboard.readText()
-      setValue(clipboardText)
+      setQuery(clipboardText)
       setDisabled(false)
     } catch (error) {
       console.error('Error reading clipboard content:', error)
@@ -44,7 +45,7 @@ const InputForm = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ youtube_url: value }),
+      body: JSON.stringify({ youtube_url: query }),
     })
       .then(response => response.json())
       .then(data => {
@@ -61,20 +62,11 @@ const InputForm = () => {
       })
   }
 
-  //
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  }))
-
   return (
-    <Item sx={{ m: 2 }}>
-      <Grid container spacing={2} sx={{ m: 1 }}>
+    <Paper sx={{ m: 2 }}>
+      <Grid container spacing={2} sx={{ m: 2, py: 2 }}>
         <Grid xs={8}>
-          <InputField value={value} onChange={onChange} />
+          <InputField value={query} onChange={onChange} error={error} />
         </Grid>
         <Grid xs={4} display='flex' justifyContent='center' alignItems='center'>
           <Stack direction='row' spacing={2}>
@@ -93,7 +85,7 @@ const InputForm = () => {
           </Stack>
         </Grid>
       </Grid>
-    </Item>
+    </Paper>
   )
 }
 
