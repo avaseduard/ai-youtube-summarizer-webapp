@@ -26,7 +26,7 @@ const Footer = () => {
         justifyContent='center'
         alignItems='center'
       >
-        <Grid xs='auto'>
+        <Grid item xs='auto'>
           <Stack direction='row' spacing={1}>
             <h2
               style={{

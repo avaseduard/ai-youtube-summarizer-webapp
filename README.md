@@ -6,12 +6,9 @@ Technologies used:
 - Bootstrap
 
 To do list:
-<!-- - align all text from transcript fields to the left -->
-<!-- - create new lines between bullets at AI summary -->
-<!-- - set input field error conditions -->
-- after thumbnail, title, summary, transcript are available, clear input field
-- add loading card or spinners
-- hide thumbnail, title, summary, transcript when they are not available
+<!-- - slight mui css adjustments and solved item prop error -->
+<!-- - after thumbnail, title, summary, transcript are available, clear input field -->
+<!-- - hide thumbnail, title, summary, transcript when they are not available -->
+<!-- - set loading spinner on buttons -->
+<!-- - create alerts for summarize succes and error -->
 - save all to local storage and if title already exists, get it from local storage instead of downloading it again
-<!-- - refactor transcript component -->
-<!-- - refactor mui Item function -->
