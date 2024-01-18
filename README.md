@@ -11,4 +11,4 @@ To do list:
 <!-- - hide thumbnail, title, summary, transcript when they are not available -->
 <!-- - set loading spinner on buttons -->
 <!-- - create alerts for summarize succes and error -->
-- save all to local storage and if title already exists, get it from local storage instead of downloading it again
+<!-- - save all to local storage and if title already exists, get it from local storage instead of downloading it again -->

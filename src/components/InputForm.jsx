@@ -40,28 +40,55 @@ const InputForm = () => {
 
   // Send video url to backend and get summary, thumbnail url and title in response
   const handleSummarize = () => {
+    const videoId = query.slice(query.indexOf('=') + 1)
+
     setDisabled(true)
-    fetch('http://127.0.0.1:5000/get_summary', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ youtube_url: query }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        setDisabled(false)
-        dispatch(setSummary(data.summary))
-        dispatch(setTitle(data.video_title))
-        dispatch(setThumbnail(data.thumbnail_url))
-        dispatch(setTranscriptions(data.transcriptions))
-        setQuery('')
+
+    if (localStorage.getItem(videoId)) {
+      const data = JSON.parse(localStorage.getItem(videoId))
+
+      dispatch(setSummary(data.summary))
+      dispatch(setTitle(data.video_title))
+      dispatch(setThumbnail(data.thumbnail_url))
+      dispatch(setTranscriptions(data.transcriptions))
+
+      setQuery('')
+
+      setDisabled(false)
+    } else {
+      fetch('http://127.0.0.1:5000/get_summary', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ youtube_url: query }),
       })
-      .catch(error => {
-        console.error('Error fetching summary:', error)
-        setDisabled(false)
-        setErrorMessage(true)
-      })
+        .then(response => response.json())
+        .then(data => {
+          setDisabled(false)
+          console.log('BACKEND DATA -->', data)
+          dispatch(setSummary(data.summary))
+          dispatch(setTitle(data.video_title))
+          dispatch(setThumbnail(data.thumbnail_url))
+          dispatch(setTranscriptions(data.transcriptions))
+
+          setQuery('')
+
+          const localStoredData = {
+            summary: data.summary,
+            video_title: data.video_title,
+            thumbnail_url: data.thumbnail_url,
+            transcriptions: data.transcriptions,
+          }
+
+          localStorage.setItem(videoId, JSON.stringify(localStoredData))
+        })
+        .catch(error => {
+          console.error('Error fetching summary:', error)
+          setDisabled(false)
+          setErrorMessage(true)
+        })
+    }
   }
 
   return (
@@ -77,7 +104,13 @@ const InputForm = () => {
               wait.
             </Alert>
           ) : errorMessage ? (
-            <Alert style={{ textAlign: 'left' }} severity='error'>
+            <Alert
+              style={{ textAlign: 'left' }}
+              severity='error'
+              onClose={() => {
+                setErrorMessage(false)
+              }}
+            >
               <AlertTitle style={{ fontWeight: 'bold' }}>Oops!</AlertTitle>
               Something went wrong, please report the problem and refresh the
               page.
@@ -94,7 +127,7 @@ const InputForm = () => {
           alignItems='center'
         >
           <Stack direction='row' spacing={2}>
-            {disabled ? (
+            {disabled || errorMessage ? (
               <CircularProgress />
             ) : (
               <>
