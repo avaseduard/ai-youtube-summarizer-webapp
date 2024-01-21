@@ -1,22 +1,12 @@
 import IconButton from '@mui/material/IconButton'
 import Stack from '@mui/material/Stack'
 import Grid from '@mui/material/Grid'
-import Paper from '@mui/material/Paper'
-import { styled } from '@mui/material/styles'
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
+import { Item } from '../utilities/mui'
 
-const Footer = () => {
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  }))
-
-  return (
+const Footer = () => (
     <Item sx={{ m: 1 }} >
       <Grid
         container
@@ -60,6 +50,5 @@ const Footer = () => {
       </Grid>
     </Item>
   )
-}
 
 export default Footer

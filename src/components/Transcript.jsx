@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { styled } from '@mui/material/styles'
-import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Unstable_Grid2'
+import { Item } from '../utilities/mui'
 
 const Transcript = () => {
   const [summaryText, setSummaryText] = useState('')
@@ -24,19 +23,9 @@ const Transcript = () => {
     setTranscriptionsText(transcriptions)
   }, [summary, title, thumbnail, transcriptions])
 
-  //
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'left',
-    color: theme.palette.text.secondary,
-    // overflow: 'hidden', // Ensure the image doesn't overflow the container
-  }))
-
   return (
     <Grid container spacing={2} sx={{ mb: 2, mx: 1 }}>
-      <Grid xs={6}>
+      <Grid xs={4}>
         <Item>
           <h2 style={{ color: 'black', textAlign: 'center' }}>{titleText}</h2>
           <img
@@ -46,7 +35,7 @@ const Transcript = () => {
           />
         </Item>
       </Grid>
-      <Grid xs={6}>
+      <Grid xs={8}>
         <Item style={{ whiteSpace: 'pre-line' }}>
           <h2 style={{ color: 'black', textAlign: 'center' }}>AI summary</h2>
           {summaryText}

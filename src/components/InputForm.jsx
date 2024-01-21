@@ -9,52 +9,68 @@ import { setSummary } from '../store/reducers/summary.reducer'
 import { setTitle } from '../store/reducers/title.reducer'
 import { setThumbnail } from '../store/reducers/thumbnail.reducer'
 import { setTranscriptions } from '../store/reducers/transcriptions.reducer'
+import AlertSpace from './AlertSpace'
 
 const InputForm = () => {
   const dispatch = useDispatch()
   const [query, setQuery] = useState('')
-  const [disabled, setDisabled] = useState(false)
-  const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [inputError, setInputError] = useState(false)
   const [errorMessage, setErrorMessage] = useState(false)
 
   // Get value from input field
   const onChange = e => {
     e.target.value.includes('https://www.youtube.com/watch?v=')
-      ? setError(false)
-      : setError(true)
+      ? setInputError(false)
+      : setInputError(true)
     setQuery(e.target.value)
   }
 
-  // Paste from clipboard button functionality
+  // Paste from clipboard, when button is pressed, into input field
   const handlePaste = async () => {
-    setDisabled(true)
+    setLoading(true)
     try {
       const clipboardText = await navigator.clipboard.readText()
       setQuery(clipboardText)
-      setDisabled(false)
+      setLoading(false)
     } catch (error) {
-      console.error('Error reading clipboard content:', error)
-      setDisabled(false)
+      console.error('Error reading clipboard text -->', error)
+      setLoading(false)
+      setErrorMessage(true)
     }
   }
 
-  // Send video url to backend and get summary, thumbnail url and title in response
+  // Dispatch data to Redux store
+  const dispatchToRedux = data => {
+    dispatch(setSummary(data.summary))
+    dispatch(setTitle(data.video_title))
+    dispatch(setThumbnail(data.thumbnail_url))
+    dispatch(setTranscriptions(data.transcriptions))
+  }
+
+  // Set data to local storage
+  const setDataToLocalStorage = (key, data) => {
+    const localStoredData = {
+      summary: data.summary,
+      video_title: data.video_title,
+      thumbnail_url: data.thumbnail_url,
+      transcriptions: data.transcriptions,
+    }
+    localStorage.setItem(key, JSON.stringify(localStoredData))
+  }
+
+  // Send video url to backend and get summary, transcription, thumbnail url and title in response
   const handleSummarize = () => {
+    // Get video id from query url
     const videoId = query.slice(query.indexOf('=') + 1)
-
-    setDisabled(true)
-
+    //
+    setLoading(true)
+    // If data is already in local storage, get it form there, else fetch from backend
     if (localStorage.getItem(videoId)) {
       const data = JSON.parse(localStorage.getItem(videoId))
-
-      dispatch(setSummary(data.summary))
-      dispatch(setTitle(data.video_title))
-      dispatch(setThumbnail(data.thumbnail_url))
-      dispatch(setTranscriptions(data.transcriptions))
-
+      dispatchToRedux(data)
       setQuery('')
-
-      setDisabled(false)
+      setLoading(false)
     } else {
       fetch('http://127.0.0.1:5000/get_summary', {
         method: 'POST',
@@ -65,27 +81,14 @@ const InputForm = () => {
       })
         .then(response => response.json())
         .then(data => {
-          setDisabled(false)
-          console.log('BACKEND DATA -->', data)
-          dispatch(setSummary(data.summary))
-          dispatch(setTitle(data.video_title))
-          dispatch(setThumbnail(data.thumbnail_url))
-          dispatch(setTranscriptions(data.transcriptions))
-
+          dispatchToRedux(data)
+          setDataToLocalStorage(videoId, data)
           setQuery('')
-
-          const localStoredData = {
-            summary: data.summary,
-            video_title: data.video_title,
-            thumbnail_url: data.thumbnail_url,
-            transcriptions: data.transcriptions,
-          }
-
-          localStorage.setItem(videoId, JSON.stringify(localStoredData))
+          setLoading(false)
         })
         .catch(error => {
           console.error('Error fetching summary:', error)
-          setDisabled(false)
+          setLoading(false)
           setErrorMessage(true)
         })
     }
@@ -94,31 +97,32 @@ const InputForm = () => {
   return (
     <Paper sx={{ mx: 2, mt: 4, mb: 2 }}>
       <Grid container spacing={2} sx={{ pb: 2, pl: 2 }}>
+        {/* Input field or alerts */}
         <Grid item xs={8}>
-          {disabled ? (
-            <Alert style={{ textAlign: 'left' }} severity='info'>
-              <AlertTitle style={{ fontWeight: 'bold' }}>
-                Your summary is being generated
-              </AlertTitle>
-              Depending on the video's length, this might take a while, please
-              wait.
-            </Alert>
+          {loading ? (
+            <AlertSpace
+              severity={'info'}
+              alertTitle={'Your summary is being generated'}
+              alertText={
+                'Depending on the video, this might take a while, please wait.'
+              }
+            />
           ) : errorMessage ? (
-            <Alert
-              style={{ textAlign: 'left' }}
-              severity='error'
+            <AlertSpace
+              severity={'error'}
+              alertTitle={'Oops!'}
+              alertText={
+                'Something went wrong, please report the problem and refresh the page.'
+              }
               onClose={() => {
                 setErrorMessage(false)
               }}
-            >
-              <AlertTitle style={{ fontWeight: 'bold' }}>Oops!</AlertTitle>
-              Something went wrong, please report the problem and refresh the
-              page.
-            </Alert>
+            />
           ) : (
-            <InputField value={query} onChange={onChange} error={error} />
+            <InputField value={query} onChange={onChange} error={inputError} />
           )}
         </Grid>
+        {/* Buttons or loading spinner */}
         <Grid
           item
           xs={4}
@@ -127,19 +131,17 @@ const InputForm = () => {
           alignItems='center'
         >
           <Stack direction='row' spacing={2}>
-            {disabled || errorMessage ? (
+            {loading || errorMessage ? (
               <CircularProgress />
             ) : (
               <>
                 <ContainedButton
                   variant={'outlined'}
-                  disabled={disabled}
                   onClick={handlePaste}
                   text={'Paste link'}
                 />
                 <ContainedButton
                   variant={'contained'}
-                  disabled={disabled}
                   onClick={handleSummarize}
                   text={'Summarize'}
                 />
