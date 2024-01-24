@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Alert, AlertTitle, CircularProgress, Stack } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
+import { CircularProgress, Stack } from '@mui/material'
 import InputField from './InputField'
 import ContainedButton from './ContainedButton'
+import AlertSpace from './AlertSpace'
 import { setSummary } from '../store/reducers/summary.reducer'
 import { setTitle } from '../store/reducers/title.reducer'
 import { setThumbnail } from '../store/reducers/thumbnail.reducer'
 import { setTranscriptions } from '../store/reducers/transcriptions.reducer'
-import AlertSpace from './AlertSpace'
 
 const InputForm = () => {
   const dispatch = useDispatch()
@@ -102,9 +102,9 @@ const InputForm = () => {
           {loading ? (
             <AlertSpace
               severity={'info'}
-              alertTitle={'Your summary is being generated'}
+              alertTitle={'Generating summary...'}
               alertText={
-                'Depending on the video, this might take a while, please wait.'
+                'This might even take a few minutes, so please be patient.'
               }
             />
           ) : errorMessage ? (
